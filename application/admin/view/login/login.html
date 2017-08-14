@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--Head-->
+<head>
+    <meta charset="utf-8">
+    <title>后台管理系统</title>
+    <meta name="description" content="login page">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    {include file="common/basiccss"}
+</head>
+<!--Head Ends-->
+<!--Body-->
+<body>
+    <div class="login-container animated fadeInDown">
+        <form action="" method="post">
+            <div class="loginbox bg-white">
+                <div class="loginbox-title">管理员登录</div>
+                <div class="loginbox-textbox">
+                    <input class="form-control" placeholder="用户名" required="" name="name" type="text">
+                </div>
+                <div class="loginbox-textbox">
+                    <input class="form-control" placeholder="密码" required="" name="password" type="password">
+                </div>
+                <div class="loginbox-submit">
+                    <input class="btn btn-primary btn-block" value="登录" type="submit">
+                </div>
+            </div>
+        </form>
+    </div>
+    {include file="common/basicjs"}
+</body>
+<!--Body Ends-->
+</html>
