@@ -8,8 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> {include file="common/basiccss"}
-    <link href="__PUBLIC__/style/css/fileinput.css" rel="stylesheet">
-    <link href="__PUBLIC__/style/css/fileinput-theme.css" rel="stylesheet">
 </head>
 
 <body>
@@ -26,7 +24,7 @@
                             <a href="{:url('index/index')}">系统</a>
                         </li>
                         <li>
-                            <a href="{:url('supplier/lst')}">供应商管理</a>
+                            <a href="{:url('supplier/typeLst')}">供应商管理</a>
                         </li>
                         <li class="active">添加供应商</li>
                     </ul>
@@ -42,47 +40,24 @@
                                 </div>
                                 <div class="widget-body">
                                     <div id="horizontal-form">
-                                        <form class="form-horizontal" role="form" action="" enctype="multipart/form-data" method="post">
+                                        <form class="form-horizontal" role="form" action="" method="post">
                                             <div class="form-group">
-                                                <label for="name" class="col-sm-2 control-label no-padding-right">
+                                                <label for="type" class="col-sm-2 control-label no-padding-right">
                                                     类别
                                                 </label>
                                                 <div class="col-sm-6">
-                                                    <select name="typeId" class="form-control">
-                                                        {volist name='types' id='vo'}
-                                                        <option value="{$vo['id']}">{$vo['description']}</option>
-                                                        {/volist}
-                                                    </select>
+                                                    <input class="form-control" id="supplierType" placeholder="供应商类别的英文，如窗帘对应‘Curtain’" name="type" required="" type="text">
                                                 </div>
                                                 <p class="help-block col-sm-4 red">
                                                     * 必填
                                                 </p>
                                             </div>
                                             <div class="form-group">
-                                                <label for="name" class="col-sm-2 control-label no-padding-right">
-                                                    名称
+                                                <label for="description" class="col-sm-2 control-label no-padding-right">
+                                                    描述
                                                 </label>
                                                 <div class="col-sm-6">
-                                                    <input class="form-control" id="supplieNname" placeholder="供应商名称" name="name" required="" type="text">
-                                                </div>
-                                                <p class="help-block col-sm-4 red">
-                                                    * 必填
-                                                </p>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label no-padding-right">
-                                                    样图
-                                                </label>
-                                                <div class="col-sm-6">
-                                                    <input name="img" id="img" type="file">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="homeUrl" class="col-sm-2 control-label no-padding-right">
-                                                    主页
-                                                </label>
-                                                <div class="col-sm-6">
-                                                    <input class="form-control" id="supplieHomeUrl" placeholder="供应商主页地址，如'http://www.baidu.com'" name="homeUrl" required="" type="text">
+                                                    <input class="form-control" id="supplierdescription" placeholder="供应商类别的描述" name="description" required="" type="text">
                                                 </div>
                                                 <p class="help-block col-sm-4 red">
                                                     * 必填
@@ -106,20 +81,6 @@
         </div>
     </div>
     {include file="common/basicjs"}
-    <script src="__PUBLIC__/style/js/fileinput.js"></script>
-    <script src="__PUBLIC__/style/js/fileinput-zh.js"></script>
-    <script src="__PUBLIC__/style/js/fileinput-theme.js"></script>
-    <script>
-    $(document).ready(function() {
-        $("#img").fileinput({
-            language: 'zh',
-            showUpload: false,
-            showCaption: false,
-            multiple: true,
-            maxFileSize: 2000
-        });
-    });
-    </script>
 </body>
 
 </html>

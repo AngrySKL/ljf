@@ -44,9 +44,9 @@
                                     <a href="#products">产品<span class="caret"/></a>
                                     <ul class="dropdown-menu dropdown-menu-right">
                                         {volist name="products" id="vo"}
-                                            <li>
-                                                <a href="{:url('product/dtl', array('id'=>$vo['id']))}">{$vo.name}</a>
-                                            </li>
+                                        <li>
+                                            <a href="{:url('product/dtl', array('id'=>$vo['id']))}">{$vo.name}</a>
+                                        </li>
                                         {/volist}
                                     </ul>
                                 </li>
@@ -70,140 +70,28 @@
             </div>
             <ul class="nk-isotope-filter">
                 <li class="active" data-filter="*">全部</li>
-                <li data-filter="type1">类别1</li>
-                <li data-filter="type2">类别2</li>
-                <li data-filter="type3">类别3</li>
-                <li data-filter="type4">类别4</li>
-                <li data-filter="type5">类别5</li>
+                {volist name='types' id='vo'}
+                <li data-filter="{$vo['type']}">{$vo['description']}</li>
+                {/volist}
             </ul>
             <!-- END: Filter -->
             <div class="nk-portfolio-list nk-isotope nk-isotope-3-cols">
-                <div class="nk-isotope-item" data-filter="type1">
-                    <div class="nk-portfolio-item nk-portfolio-item-square nk-portfolio-item-info-style-1">
-                        <a href="portfolio-single.html" class="nk-portfolio-item-link"></a>
-                        <div class="nk-portfolio-item-image">
-                            <div style="background-image: url('assets/images/portfolio-7-sm.jpg');"></div>
-                        </div>
-                        <div class="nk-portfolio-item-info nk-portfolio-item-info-center text-xs-center">
-                            <div>
-                                <h2 class="portfolio-item-title h3">供应商1</h2>
-                                <div class="portfolio-item-category">类别1</div>
+                {volist name='suppliers' id='vo'}
+                    <div class="nk-isotope-item" data-filter="{$vo['type']}">
+                        <div class="nk-portfolio-item nk-portfolio-item-square nk-portfolio-item-info-style-1">
+                            <a href="portfolio-single.html" class="nk-portfolio-item-link"></a>
+                            <div class="nk-portfolio-item-image">
+                                <div style="background-image: url('{$vo['imageUrl']}');"></div>
+                            </div>
+                            <div class="nk-portfolio-item-info nk-portfolio-item-info-center text-xs-center">
+                                <div>
+                                    <h2 class="portfolio-item-title h3">{$vo['name']}</h2>
+                                    <div class="portfolio-item-category">{$vo['typeDescription']}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="nk-isotope-item" data-filter="type1">
-                    <div class="nk-portfolio-item nk-portfolio-item-square nk-portfolio-item-info-style-1">
-                        <a href="portfolio-single.html" class="nk-portfolio-item-link"></a>
-                        <div class="nk-portfolio-item-image">
-                            <div style="background-image: url('assets/images/portfolio-4-sm.jpg');"></div>
-                        </div>
-                        <div class="nk-portfolio-item-info nk-portfolio-item-info-center text-xs-center">
-                            <div>
-                                <h2 class="portfolio-item-title h3">供应商2</h2>
-                                <div class="portfolio-item-category">类别1</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="nk-isotope-item" data-filter="type1">
-                    <div class="nk-portfolio-item nk-portfolio-item-square nk-portfolio-item-info-style-1">
-                        <a href="portfolio-single.html" class="nk-portfolio-item-link"></a>
-                        <div class="nk-portfolio-item-image">
-                            <div style="background-image: url('assets/images/portfolio-5-sm.jpg');"></div>
-                        </div>
-                        <div class="nk-portfolio-item-info nk-portfolio-item-info-center text-xs-center">
-                            <div>
-                                <h2 class="portfolio-item-title h3">供应商3</h2>
-                                <div class="portfolio-item-category">类别1</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="nk-isotope-item" data-filter="type2">
-                    <div class="nk-portfolio-item nk-portfolio-item-square nk-portfolio-item-info-style-1">
-                        <a href="portfolio-single.html" class="nk-portfolio-item-link"></a>
-                        <div class="nk-portfolio-item-image">
-                            <div style="background-image: url('assets/images/portfolio-9-sm.jpg');"></div>
-                        </div>
-                        <div class="nk-portfolio-item-info nk-portfolio-item-info-center text-xs-center">
-                            <div>
-                                <h2 class="portfolio-item-title h3">供应商4</h2>
-                                <div class="portfolio-item-category">类别2</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="nk-isotope-item" data-filter="type2">
-                    <div class="nk-portfolio-item nk-portfolio-item-square nk-portfolio-item-info-style-1">
-                        <a href="portfolio-single.html" class="nk-portfolio-item-link"></a>
-                        <div class="nk-portfolio-item-image">
-                            <div style="background-image: url('assets/images/portfolio-3-sm.jpg');"></div>
-                        </div>
-                        <div class="nk-portfolio-item-info nk-portfolio-item-info-center text-xs-center">
-                            <div>
-                                <h2 class="portfolio-item-title h3">供应商5</h2>
-                                <div class="portfolio-item-category">类别2</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="nk-isotope-item" data-filter="type3">
-                    <div class="nk-portfolio-item nk-portfolio-item-square nk-portfolio-item-info-style-1">
-                        <a href="portfolio-single.html" class="nk-portfolio-item-link"></a>
-                        <div class="nk-portfolio-item-image">
-                            <div style="background-image: url('assets/images/portfolio-8-sm.jpg');"></div>
-                        </div>
-                        <div class="nk-portfolio-item-info nk-portfolio-item-info-center text-xs-center">
-                            <div>
-                                <h2 class="portfolio-item-title h3">供应商6</h2>
-                                <div class="portfolio-item-category">类别3</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="nk-isotope-item" data-filter="type4">
-                    <div class="nk-portfolio-item nk-portfolio-item-square nk-portfolio-item-info-style-1">
-                        <a href="portfolio-single.html" class="nk-portfolio-item-link"></a>
-                        <div class="nk-portfolio-item-image">
-                            <div style="background-image: url('assets/images/portfolio-2-sm.jpg');"></div>
-                        </div>
-                        <div class="nk-portfolio-item-info nk-portfolio-item-info-center text-xs-center">
-                            <div>
-                                <h2 class="portfolio-item-title h3">供应商7</h2>
-                                <div class="portfolio-item-category">类别4</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="nk-isotope-item" data-filter="type4">
-                    <div class="nk-portfolio-item nk-portfolio-item-square nk-portfolio-item-info-style-1">
-                        <a href="portfolio-single.html" class="nk-portfolio-item-link"></a>
-                        <div class="nk-portfolio-item-image">
-                            <div style="background-image: url('assets/images/portfolio-6-sm.jpg');"></div>
-                        </div>
-                        <div class="nk-portfolio-item-info nk-portfolio-item-info-center text-xs-center">
-                            <div>
-                                <h2 class="portfolio-item-title h3">供应商8</h2>
-                                <div class="portfolio-item-category">类别4</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="nk-isotope-item" data-filter="type5">
-                    <div class="nk-portfolio-item nk-portfolio-item-square nk-portfolio-item-info-style-1">
-                        <a href="portfolio-single.html" class="nk-portfolio-item-link"></a>
-                        <div class="nk-portfolio-item-image">
-                            <div style="background-image: url('assets/images/portfolio-12-sm.jpg');"></div>
-                        </div>
-                        <div class="nk-portfolio-item-info nk-portfolio-item-info-center text-xs-center">
-                            <div>
-                                <h2 class="portfolio-item-title h3">供应商9</h2>
-                                <div class="portfolio-item-category">类别5</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {/volist}
             </div>
             <div class="nk-gap-4"></div>
         </div>
@@ -228,8 +116,7 @@
     <script src="__PUBLIC__/js/stellar.js"></script>
     <script src="__PUBLIC__/js/nivo-lightbox.min.js"></script>
     <script src="__PUBLIC__/js/custom.js"></script>
-
-    <script src="js/css3-animate-it.js"></script>
+    <script src="__PUBLIC__/js/css3-animate-it.js"></script>
 </body>
 
 </html>
