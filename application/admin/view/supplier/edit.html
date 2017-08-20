@@ -133,7 +133,7 @@
 
     function getImg() {
         var imgStr = "{$supplier['imageUrl']}";
-        return imgStr.replace(/(^s*)|(s*$)/g, "").length == 0 || imgStr == null ? null : "<img src='" + imgStr + "' class='file-preview-image' style='width:96px'>";
+        return imgStr.replace(/(^s*)|(s*$)/g, "").length == 0 || imgStr == null ? '' : "<img src='" + imgStr + "' class='file-preview-image' style='width:96px'>";
     }
     </script>
 </body>
