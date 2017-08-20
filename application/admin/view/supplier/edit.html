@@ -43,8 +43,8 @@
                                 <div class="widget-body">
                                     <div id="horizontal-form">
                                         <form class="form-horizontal" role="form" action="" enctype="multipart/form-data" method="post">
-                                            <input type="hidden" name="id" value="{$supplier.id}">
-                                            <input type="hidden" name="removeImg" id="removeImg" value=-1>
+                                            <input type="hidden" name="id" value="{$supplier['id']}">
+                                            <input type="hidden" name="editImg" id="editImg" value=-1>
                                             <div class="form-group">
                                                 <label for="name" class="col-sm-2 control-label no-padding-right">
                                                     类别
@@ -53,7 +53,7 @@
                                                     <select name="typeId" class="form-control">
                                                         {volist name='types' id='vo'}
                                                         <option value="{$vo['id']}"
-                                                        {$vo[ 'id'] == $supplier[ 'typeId'] ? "selected = 'selected'" : ''}>
+                                                        {$vo['id'] == $supplier['typeId'] ? "selected = 'selected'" : ''}>
                                                             {$vo['description']}
                                                         </option>
                                                         {/volist}
@@ -68,7 +68,7 @@
                                                     名称
                                                 </label>
                                                 <div class="col-sm-6">
-                                                    <input class="form-control" id="supplieNname" placeholder="供应商名称" name="name" required="" type="text" value="{$supplier['name']}">
+                                                    <input class="form-control" id="supplierNname" placeholder="供应商名称" name="name" required="" type="text" value="{$supplier['name']}">
                                                 </div>
                                                 <p class="help-block col-sm-4 red">
                                                     * 必填
@@ -87,7 +87,7 @@
                                                     主页
                                                 </label>
                                                 <div class="col-sm-6">
-                                                    <input class="form-control" id="supplieHomeUrl" placeholder="供应商主页地址，如'http://www.baidu.com'" name="homeUrl" required="" type="text" value="{$supplier['homeUrl']}">
+                                                    <input class="form-control" id="supplierHomeUrl" placeholder="供应商主页地址，如'http://www.baidu.com'" name="homeUrl" required="" type="text" value="{$supplier['homeUrl']}">
                                                 </div>
                                                 <p class="help-block col-sm-4 red">
                                                     * 必填
@@ -124,10 +124,10 @@
             initialPreview: getImg(),
         });
         $('#img').on('fileclear', function(event) {
-            $('#removeImg').val(0);
+            $('#editImg').val(0);
         });
         $('#img').on('fileloaded', function(event, file, previewId, index, reader) {
-            $('#removeImg').val(1);
+            $('#editImg').val(1);
         });
     });
 

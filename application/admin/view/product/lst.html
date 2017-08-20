@@ -7,8 +7,9 @@
     <meta name="description" content="Dashboard">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    {include file="common/basiccss"}
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> {include file="common/basiccss"}
+    <link href="__PUBLIC__/style/css/lightbox.css" rel="stylesheet">
+    <link href="__PUBLIC__/style/css/screen.css" rel="stylesheet">
 </head>
 
 <body>
@@ -41,6 +42,37 @@
                                 <div class="widget-body">
                                     <div class="flip-scroll">
                                         <table class="table table-bordered table-hover" style="word-break:break-all; word-wrap:break-all;">
+                                            <thead class="">
+                                                <tr>
+                                                    <th class="text-center" width="5%">ID</th>
+                                                    <th class="text-center" width="5%">名称</th>
+                                                    <th class="text-center" width="20%">介绍</th>
+                                                    <th class="text-center" width="50%">样图</th>
+                                                    <th class="text-center" width="20%">操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {volist name='list' id='vo'}
+                                                <tr>
+                                                    <td align="center">{$vo['id']}</td>
+                                                    <td align="center">{$vo['name']}</td>
+                                                    <td align="center">{$vo['description']}</td>
+                                                    <td align="center">
+                                                        {volist name="$vo['urls']" id="u"}
+                                                        <a class="example-image-link" href="{$u.bigUrl}" class="thumbnail" data-lightbox="{$vo.id}ad">
+                                                                <img class="example-image" src="{$u.smallUrl}" alt="点击查看大图">
+                                                            </a> {/volist}
+                                                    </td>
+                                                    <td align="center">
+                                                        <a href="{:url('product/edit', array('id'=>$vo['id']))}" class="btn btn-primary btn-sm shiny" target="_parent">
+                                                            <i class="fa fa-edit"></i> 编辑
+                                                        </a>
+                                                        <a href="#" onClick="warning('确实要删除吗', '{:url('product/del', array('id'=>$vo['id']))}')" class="btn btn-danger btn-sm shiny" target="_parent">
+                                                            <i class="fa fa-trash-o"></i> 删除
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                {/volist}
                                             </tbody>
                                         </table>
                                     </div>
@@ -55,6 +87,7 @@
         </div>
     </div>
     {include file="common/basicjs"}
+    <script src="__PUBLIC__/style/js/lightbox.js"></script>
 </body>
 
 </html>

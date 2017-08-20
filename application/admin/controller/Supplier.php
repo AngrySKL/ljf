@@ -1,71 +1,13 @@
 <?php
+
 namespace app\admin\controller;
 use app\admin\controller\Base;
+
+require_once 'Helper.php';
 
 class Supplier extends Base {
 
 	private $listRows = 10;
-
-	private function delFile($dirName, $self = false) {
-		if (!file_exists($dirName)) {
-			return false;
-		}
-		if (is_file($dirName) || is_link($dirName)) {
-			return unlink($dirName);
-		}
-		$dir = dir($dirName);
-		if ($dir) {
-			while (false !== $entry = $dir->read()) {
-				if ($entry == '.' || $entry == '..') {
-					continue;
-				}
-				$this->delFile($dirName . '/' . $entry);
-			}
-		}
-		$dir->close();
-		$self && rmdir($dirName);
-	}
-
-	private function delDir($dir) {
-		//先删除目录下的文件：
-		$dh = opendir($dir);
-		while ($file = readdir($dh)) {
-			if ($file != "." && $file != "..") {
-				$fullpath = $dir . "/" . $file;
-				if (!is_dir($fullpath)) {
-					unlink($fullpath);
-				} else {
-					$this->delDir($fullpath);
-				}
-			}
-		}
-
-		closedir($dh);
-		//删除当前文件夹：
-		if (rmdir($dir)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	private function createDir($dir) {
-		if (!is_dir($dir)) {
-			mkdir($dir, 0777, true);
-		}
-	}
-
-	private function getRandChar($length) {
-		$str = null;
-		$strPol = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
-		$max = strlen($strPol) - 1;
-
-		for ($i = 0; $i < $length; $i++) {
-			$str .= $strPol[rand(0, $max)];
-		}
-
-		return $str;
-	}
 
 	private function moveFile($fileName, $localPath, $urlPath, &$finalName, $addOrEdit) {
 		$pic = request()->file($fileName);
@@ -75,11 +17,11 @@ class Supplier extends Base {
 			if (empty($pic)) {
 				return;
 			} else {
-				$this->delFile($localPath);
+				delFile($localPath);
 			}
 		}
 
-		$saveName = $this->getRandChar(10) . '.jpg';
+		$saveName = getRandChar(10) . '.jpg';
 		if ($pic->move($localPath, $saveName)) {
 			$finalName = $urlPath . $saveName;
 			return true;
@@ -107,7 +49,7 @@ class Supplier extends Base {
 		if (request()->isPost()) {
 			$name = input('name');
 			$localPath = './upload/supplier/' . $name . '/';
-			$this->createDir($localPath);
+			createDir($localPath);
 
 			$urlPath = SITE_URL . '/public/upload/supplier/' . $name . '/';
 			$url = '';
@@ -130,7 +72,10 @@ class Supplier extends Base {
 
 	public function del() {
 		$id = input('id');
+		$name = db('supplier')->find($id)['name'];
 		if (db('supplier')->delete($id)) {
+			$localPath = './upload/supplier/' . $name . '/';
+			delDir($localPath);
 			$this->success('删除供应商成功！', 'lst');
 		} else {
 			$this->error('删除供应商失败！');
@@ -148,13 +93,13 @@ class Supplier extends Base {
 		if (request()->isPost()) {
 			$name = input('name');
 			$localPath = './upload/supplier/' . $name . '/';
-			$this->createDir($localPath);
+			createDir($localPath);
 
 			$url = '';
-			$removeImg = input('removeImg');
+			$editImg = input('editImg');
 			// 0 删除文件
-			if ($removeImg == 0) {
-				$this->delFile($localPath);
+			if ($editImg == 0) {
+				delFile($localPath);
 				$url = null;
 			} else {
 				$urlPath = SITE_URL . '/public/upload/supplier/' . $name . '/';
