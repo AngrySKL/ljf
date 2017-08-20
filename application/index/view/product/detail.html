@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="陸加奉（香港）國際有限公司">
+    <meta name="author" content="GreakSKL">
+    <title>陸加奉（香港）國際有限公司</title>
+    <!-- css -->
+    <link href="__PUBLIC__/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="__PUBLIC__/css/nivo-lightbox.css" rel="stylesheet" />
+    <link href="__PUBLIC__/css/nivo-lightbox-theme/default/default.css" rel="stylesheet" />
+    <link href="__PUBLIC__/css/animations.css" rel="stylesheet" />
+    <link href="__PUBLIC__/css/style.css" rel="stylesheet">
+    <link href="__PUBLIC__/color/default.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/combined.css" rel="stylesheet">
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-custom">
+    <!-- Navigation -->
+    <div id="navigation">
+        <nav class="navbar navbar-custom" role="navigation">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="site-logo">
+                            <a href="index.html" class="brand">陸加奉</a>
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                        </div>
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="menu">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="active"><a href="{:url('index/index')}">首页</a></li>
+                                <li class="dropdown">
+                                    <a href="#products">产品<span class="caret"/></a>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        {volist name="products" id="vo"}
+                                        <li>
+                                            <a href="{:url('product/dtl', array('id'=>$vo['id']))}">{$vo.name}</a>
+                                        </li>
+                                        {/volist}
+                                    </ul>
+                                </li>
+                                <li><a href="{:url('supplier/dtl')}">供应商</a></li>
+                            </ul>
+                        </div>
+                        <!-- /.Navbar-collapse -->
+                    </div>
+                </div>
+            </div>
+            <!-- /.container -->
+        </nav>
+    </div>
+    <!-- /Navigation -->
+    <!-- Section: pictures -->
+    <section id="pictures" class="home-section color-dark text-center bg-white">
+        <div class="container marginbot-50">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <div>
+                        <div class="animatedParent">
+                            <div class="section-heading text-center">
+                                <h2 class="h-bold animated bounceInDown">{$products[$index]['name']}</h2>
+                                <div class="divider-header"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row animatedParent">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="row gallery-item">
+                        {volist name="urls" id="vo"}
+                        <div class="col-md-3 animated fadeInUp {$i % 4 == 1 || $i % 4 == 0? '' : ($i % 4 == 2 ? 'slow' : 'slower')}">
+                            <a href="{$vo['smallUrl']}" title="{$products[$index]['name']}" data-lightbox-gallery="gallery1" data-lightbox-hidpi="{$vo['bigUrl']}">
+                                    <img src="{$vo['smallUrl']}" class="img-responsive" alt="img">
+                                </a>
+                        </div>
+                        {/volist}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Section: pictures -->
+    <!-- Section: about -->
+    <section id="about" class="color-dark bg-white" style="padding-top: 50px;padding-bottom: 50px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 animatedParent">
+                    <div class="text-center">
+                        <p>
+                            {$products[$index]['description']}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- START: Pagination -->
+    <div class="nk-pagination nk-pagination-center">
+        <div class="container">
+            <a class="nk-pagination-prev {$index - 1 < 0 ? 'disabled' : ''}" href="{$index - 1 < 0 ? '#' : url('product/dtl', array('id'=>$products[$index-1]['id']))}">
+                <span class="pe-7s-angle-left"></span> 上一个
+            </a>
+            <a class="nk-pagination-center" href="#pictures">
+                    <span class="nk-icon-squares"></span>
+            </a>
+            <a class="nk-pagination-next  {$index + 1 > count($products) - 1 ? 'disabled' : ''}" href="{$index + 1 > count($products) - 1 ? '#' : url('product/dtl', array('id'=>$products[$index+1]['id']))}">
+                下一个 <span class="pe-7s-angle-right"></span>
+            </a>
+        </div>
+    </div>
+    <!-- END: Pagination -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>&copy;Copyright 2017</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Core JavaScript Files -->
+    <script src="__PUBLIC__/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/js/bootstrap.min.js"></script>
+    <script src="__PUBLIC__/js/jquery.sticky.js"></script>
+    <script src="__PUBLIC__/js/jquery.easing.min.js"></script>
+    <script src="__PUBLIC__/js/jquery.scrollTo.js"></script>
+    <script src="__PUBLIC__/js/jquery.appear.js"></script>
+    <script src="__PUBLIC__/js/stellar.js"></script>
+    <script src="__PUBLIC__/js/nivo-lightbox.min.js"></script>
+    <script src="__PUBLIC__/js/custom.js"></script>
+    <script src="__PUBLIC__/js/css3-animate-it.js"></script>
+</body>
+
+</html>
