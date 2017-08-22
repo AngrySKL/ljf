@@ -122,27 +122,31 @@
         </div>
         <div class="text-center">
             <div class="container">
+                {volist name="list" id="vo"}
+                    {if condition="($i % 3) eq 1"}
                 <div class="row animatedParent">
-                    {volist name="list" id="vo"}
-                        <div class="col-xs-12 col-sm-4 col-md-4">
-                            <div class="animated rotateInDownLeft {$i % 3 == 1 ? '' : ($i % 3 == 2 ? 'slow' : 'slower')}">
-                                <div class="service-box">
-                                    <div class="service-icon">
-                                        <span class="fa fa-star fa-2x"></span>
-                                    </div>
-                                    <div class="service-desc">
-                                        <h5>{$vo.name}</h5>
-                                        <div class="divider-header"></div>
-                                        <p>
-                                            {$vo.description}
-                                        </p>
-                                        <a href="{:url('product/dtl', array('id'=>$vo['id']))}" class="btn btn-skin">了解更多</a>
-                                    </div>
+                    {/if}
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <div class="animated rotateInDownLeft {$i % 3 == 1 ? '' : ($i % 3 == 2 ? 'slow' : 'slower')}">
+                            <div class="service-box">
+                                <div class="service-icon">
+                                    <span class="fa fa-star fa-2x"></span>
+                                </div>
+                                <div class="service-desc">
+                                    <h5>{$vo.name}</h5>
+                                    <div class="divider-header"></div>
+                                    <p>
+                                        {$vo.description}
+                                    </p>
+                                    <a href="{:url('product/dtl', array('id'=>$vo['id']))}" class="btn btn-skin">了解更多</a>
                                 </div>
                             </div>
                         </div>
-                    {/volist}
+                    </div>
+                    {if condition="($i % 3) eq 0"}
                 </div>
+                    {/if}
+                {/volist}
             </div>
         </div>
     </section>

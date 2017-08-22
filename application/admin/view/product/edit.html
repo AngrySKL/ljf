@@ -141,18 +141,22 @@
         var arr = new Array();
         var imgStr = "{$product['smallUrls']}";
         var urls = imgStr.split(';');
-        urls.pop();
+        if (urls[urls.length - 1].replace(/(^s*)|(s*$)/g, "").length == 0)
+            urls.pop();
+
         for (var i = 0; i < urls.length; i++)
             arr[i] = "<img src='" + urls[i] + "' class='file-preview-image' style='width:96px'>";
 
         return arr;
     }
 
-        function getBigUrls() {
+    function getBigUrls() {
         var arr = new Array();
         var imgStr = "{$product['bigUrls']}";
         var urls = imgStr.split(';');
-        urls.pop();
+        if (urls[urls.length - 1].replace(/(^s*)|(s*$)/g, "").length == 0)
+            urls.pop();
+
         for (var i = 0; i < urls.length; i++)
             arr[i] = "<img src='" + urls[i] + "' class='file-preview-image' style='width:96px'>";
 

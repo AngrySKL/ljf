@@ -9,27 +9,6 @@ class Supplier extends Base {
 
 	private $listRows = 10;
 
-	private function moveFile($fileName, $localPath, $urlPath, &$finalName, $addOrEdit) {
-		$pic = request()->file($fileName);
-
-		// 0 add 1 edit
-		if ($addOrEdit == 1) {
-			if (empty($pic)) {
-				return;
-			} else {
-				delFile($localPath);
-			}
-		}
-
-		$saveName = getRandChar(10) . '.jpg';
-		if ($pic->move($localPath, $saveName)) {
-			$finalName = $urlPath . $saveName;
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	public function lst() {
 		$list = db('supplier')
 			->order('id', 'asc')
@@ -52,9 +31,11 @@ class Supplier extends Base {
 			createDir($localPath);
 
 			$urlPath = SITE_URL . '/public/upload/supplier/' . $name . '/';
-			$url = '';
-			$this->moveFile('img', $localPath, $urlPath, $url, 0);
-
+			$url = moveFile('img', $localPath, $urlPath, getRandFileName('.jpg'));
+			if (!$url) {
+				delFile($localPath);
+				$this->error('上传文件失败，请重试！');
+			}
 			$data = ['typeId' => input('typeId'),
 				'name' => $name,
 				'imageUrl' => $url,
@@ -97,13 +78,28 @@ class Supplier extends Base {
 
 			$url = '';
 			$editImg = input('editImg');
-			// 0 删除文件
+
+			// editImg 只能可能有3个值
+			// 0 代表删除旧图
+			// 1 代表修改旧图
+			// -1 代表未做修改
 			if ($editImg == 0) {
+				// 0 删除图片
 				delFile($localPath);
 				$url = null;
-			} else {
+			} elseif ($editImg == 1) {
+				// 1 修改图片
+				// 图片有修改时，先删除原先的旧图，再上传新图
+				delFile($localPath);
 				$urlPath = SITE_URL . '/public/upload/supplier/' . $name . '/';
-				$this->moveFile('img', $localPath, $urlPath, $url, 1);
+				$url = moveFile('img', $localPath, $urlPath, getRandFileName('.jpg'));
+				if (!$url) {
+					delFile($localPath);
+					$this->error('上传文件失败，请重试！');
+				}
+			} else {
+				// -1 未做任何修改
+				$url = $supplier['imageUrl'];
 			}
 
 			$data = ['id' => input('id'),

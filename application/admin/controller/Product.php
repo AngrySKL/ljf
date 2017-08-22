@@ -5,53 +5,28 @@ use app\admin\controller\Base;
 require_once 'Helper.php';
 
 class Product extends Base {
+
 	private $listRows = 10;
 
-	private function getValidUrls($urls) {
-		$urlList = explode(';', $urls);
-		$validUrls = array();
-		foreach ($urlList as $url) {
-			if (!empty($url)) {
-				array_push($validUrls, $url);
-			}
+	private function checkImgs() {
+		$smallPics = request()->file('smallImgs');
+		if (empty($smallPics)) {
+			$this->error('上传小图失败，请重新上传！');
 		}
 
-		return $validUrls;
-	}
+		$smallCount = is_array($smallPics) ? count($smallPics) : 1;
 
-	private function moveFile($smallName, $bigName, $localPath, $urlPath, &$finalSmallName, &$finalBigName, $addOrEdit) {
-		$smallPics = request()->file($smallName);
-		$bigPics = request()->file($bigName);
-
-		// 0 add 1 edit
-		if ($addOrEdit == 1) {
-			if (empty($smallPics) || empty($bigPics)) {
-				return;
-			} else {
-				delFile($localPath);
-			}
+		$bigPics = request()->file('bigImgs');
+		if (empty($bigPics)) {
+			$this->error('上传大图失败，请重新上传！');
 		}
 
-		$count = count($smallPics);
-		for ($i = 0; $i < $count; $i++) {
-			$prefix = getRandChar(10);
-
-			$smallName = $prefix . '.jpg';
-			$smallPic = $smallPics[$i];
-			if ($smallPic->move($localPath, $smallName)) {
-				$finalSmallName = $finalSmallName . $urlPath . $smallName . ';';
-			} else {
-				return false;
-			}
-
-			$bigName = $prefix . '@2x.jpg';
-			$bigPic = $bigPics[$i];
-			if ($bigPic->move($localPath, $bigName)) {
-				$finalBigName = $finalBigName . $urlPath . $bigName . ';';
-			} else {
-				return false;
-			}
+		$bigCount = is_array($bigPics) ? count($bigPics) : 1;
+		if ($smallCount != $bigCount) {
+			$this->error('小图和大图必须一一对应，请重新上传！');
 		}
+
+		return $smallCount;
 	}
 
 	public function lst() {
@@ -62,8 +37,8 @@ class Product extends Base {
 		$list = array();
 		foreach ($results as $product) {
 			$urls = array();
-			$smallUrls = $this->getValidUrls($product['smallUrls']);
-			$bigUrls = $this->getValidUrls($product['bigUrls']);
+			$smallUrls = stringToArray($product['smallUrls'], ';');
+			$bigUrls = stringToArray($product['bigUrls'], ';');
 
 			foreach ($smallUrls as $index => $url) {
 				array_push($urls, array('smallUrl' => $smallUrls[$index],
@@ -82,19 +57,46 @@ class Product extends Base {
 
 	public function add() {
 		if (request()->isPost()) {
+
+			$imgCount = $this->checkImgs();
+
+			$smallNames = null;
+			$bigNames = null;
+			if ($imgCount == 1) {
+				$smallNames = getRandFileName('.jpg');
+				$bigNames = str_replace('.', '@2x.', $smallNames);
+			} else {
+				$smallNames = array();
+				$bigNames = array();
+				for ($i = 0; $i < $imgCount; $i++) {
+					$smallName = getRandFileName('.jpg');
+					while (in_array($smallName, $smallNames)) {
+						$smallName = getRandFileName('.jpg');
+					}
+
+					array_push($smallNames, $smallName);
+					array_push($bigNames, str_replace('.', '@2x.', $smallName));
+				}
+			}
+
 			$name = input('name');
 			$localPath = './upload/product/' . $name . '/';
 			createDir($localPath);
 
 			$urlPath = SITE_URL . '/public/upload/product/' . $name . '/';
-			$smallUrls = '';
-			$bigUrls = '';
-			$this->moveFile('smallImgs', 'bigImgs', $localPath, $urlPath, $smallUrls, $bigUrls, 0);
+
+			$smallUrls = moveFile('smallImgs', $localPath, $urlPath, $smallNames);
+			$bigUrls = moveFile('bigImgs', $localPath, $urlPath, $bigNames);
+
+			if (!$smallUrls || !$bigUrls) {
+				delFile($localPath);
+				$this->error('上传图片失败，请重试！');
+			}
 
 			$data = ['name' => $name,
 				'description' => input('description'),
-				'smallUrls' => $smallUrls,
-				'bigUrls' => $bigUrls];
+				'smallUrls' => $imgCount == 1 ? $smallUrls : implode(';', $smallUrls),
+				'bigUrls' => $imgCount == 1 ? $bigUrls : implode(';', $bigUrls)];
 			if (db('product')->insert($data)) {
 				return $this->success('添加商品成功！', 'lst');
 			} else {
@@ -121,6 +123,7 @@ class Product extends Base {
 		$id = input('id');
 		$product = db('product')->find($id);
 		if (request()->isPost()) {
+			// 小图和大图皆由用户上传，这里不做图片处理。
 			// 这里强制约定，小图和大图的操作一一对应。
 			// * 编辑的时候把小图删了，却没有删大图，那么，这里会把大图也删了。
 			// * 编辑的时候如果只换了小图，却没有换大图，那么，编辑无效。
@@ -157,12 +160,38 @@ class Product extends Base {
 					// 小图修改了而大图没修改
 					$this->error('修改商品失败，小图和大图必须同步修改！');
 				} else {
-					// 小图和大图都修改了
-					$smallUrls = '';
-					$bigUrls = '';
-					$this->moveFile('smallImgs', 'bigImgs', $localPath, $urlPath, $smallUrls, $bigUrls, 1);
-					$data['smallUrls'] = $smallUrls;
-					$data['bigUrls'] = $bigUrls;
+					// 小图和大图都修改了,先删除旧图，再上传新图
+					delFile($localPath);
+
+					$imgCount = $this->checkImgs();
+					$smallNames = null;
+					$bigNames = null;
+					if ($imgCount == 1) {
+						$smallNames = getRandFileName('.jpg');
+						$bigNames = str_replace('.', '@2x.', $smallNames);
+					} else {
+						$smallNames = array();
+						$bigNames = array();
+						for ($i = 0; $i < $imgCount; $i++) {
+							$smallName = getRandFileName('.jpg');
+							while (in_array($smallName, $smallNames)) {
+								$smallName = getRandFileName('.jpg');
+							}
+
+							array_push($smallNames, $smallName);
+							array_push($bigNames, str_replace('.', '@2x.', $smallName));
+						}
+					}
+					$smallUrls = moveFile('smallImgs', $localPath, $urlPath, $smallNames);
+					$bigUrls = moveFile('bigImgs', $localPath, $urlPath, $bigNames);
+
+					if (!$smallUrls || !$bigUrls) {
+						delFile($localPath);
+						$this->error('上传图片失败，请重试！');
+					}
+
+					$data['smallUrls'] = $imgCount == 1 ? $smallUrls : implode(';', $smallUrls);
+					$data['bigUrls'] = $imgCount == 1 ? $bigUrls : implode(';', $bigUrls);
 				}
 			}
 
