@@ -36,14 +36,8 @@ class Product extends Base {
 
 		$list = array();
 		foreach ($results as $product) {
-			$urls = array();
-			$smallUrls = stringToArray($product['smallUrls'], ';');
-			$bigUrls = stringToArray($product['bigUrls'], ';');
-
-			foreach ($smallUrls as $index => $url) {
-				array_push($urls, array('smallUrl' => $smallUrls[$index],
-					'bigUrl' => $bigUrls[$index]));
-			}
+			$urls = meargeArray(stringToArray($product['smallUrls'], ';'), 'smallUrl',
+				stringToArray($product['bigUrls'], ';'), 'bigUrl');
 
 			array_push($list, array('id' => $product['id'],
 				'name' => $product['name'],

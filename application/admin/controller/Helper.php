@@ -124,3 +124,24 @@ function stringToArray($source, $separator) {
 
 	return $result;
 }
+
+function meargeArray($array1, $key1, $array2, $key2) {
+	if (empty($array1) ||
+		empty($key1) ||
+		empty($array2) ||
+		empty($key2)) {
+		return false;
+	}
+
+	if (count($array1) != count($array2)) {
+		return false;
+	}
+
+	$newArray = array();
+	foreach ($array1 as $index => $value) {
+		array_push($newArray, array($key1 => $array1[$index],
+			$key2 => $array2[$index]));
+	}
+
+	return $newArray;
+}
