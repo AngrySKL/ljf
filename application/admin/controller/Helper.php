@@ -79,11 +79,11 @@ function moveFile($fileName, $localPath, $urlPath, $saveName) {
 
 	if (!is_array($saveName)) {
 		$pic = request()->file($fileName);
-		if (count($pic) > 1) {
+		if (is_array($pic)) {
 			return false;
 		}
 
-		if ($pic[0]->move($localPath, $saveName)) {
+		if ($pic->move($localPath, $saveName)) {
 			return $urlPath . $saveName;
 		} else {
 			return false;
@@ -144,4 +144,12 @@ function meargeArray($array1, $key1, $array2, $key2) {
 	}
 
 	return $newArray;
+}
+
+function getUploadLocalPath() {
+	return './upload/';
+}
+
+function getUploadUrlPath() {
+	return SITE_URL . '/upload/';
 }

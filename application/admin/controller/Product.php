@@ -74,10 +74,10 @@ class Product extends Base {
 			}
 
 			$name = input('name');
-			$localPath = './upload/product/' . $name . '/';
+			$localPath = getUploadLocalPath() . 'product/' . $name . '/';
 			createDir($localPath);
 
-			$urlPath = SITE_URL . '/public/upload/product/' . $name . '/';
+			$urlPath = getUploadUrlPath() . 'product/' . $name . '/';
 
 			$smallUrls = moveFile('smallImgs', $localPath, $urlPath, $smallNames);
 			$bigUrls = moveFile('bigImgs', $localPath, $urlPath, $bigNames);
@@ -125,10 +125,10 @@ class Product extends Base {
 			$editBigImgs = input('editBigImgs');
 
 			$name = input('name');
-			$localPath = './upload/product/' . $name . '/';
+			$localPath = getUploadLocalPath() . 'product/' . $name . '/';
 			createDir($localPath);
 
-			$urlPath = SITE_URL . '/public/upload/product/' . $name . '/';
+			$urlPath = getUploadUrlPath() . 'product/' . $name . '/';
 
 			$data = array();
 			$data['id'] = $id;

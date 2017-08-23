@@ -27,10 +27,10 @@ class Supplier extends Base {
 
 		if (request()->isPost()) {
 			$name = input('name');
-			$localPath = './upload/supplier/' . $name . '/';
+			$localPath = getUploadLocalPath() . 'supplier/' . $name . '/';
 			createDir($localPath);
 
-			$urlPath = SITE_URL . '/public/upload/supplier/' . $name . '/';
+			$urlPath = getUploadUrlPath() . 'supplier/' . $name . '/';
 			$url = moveFile('img', $localPath, $urlPath, getRandFileName('.jpg'));
 			if (!$url) {
 				delFile($localPath);
@@ -73,7 +73,7 @@ class Supplier extends Base {
 
 		if (request()->isPost()) {
 			$name = input('name');
-			$localPath = './upload/supplier/' . $name . '/';
+			$localPath = getUploadLocalPath() . 'supplier/' . $name . '/';
 			createDir($localPath);
 
 			$url = '';
@@ -91,7 +91,7 @@ class Supplier extends Base {
 				// 1 修改图片
 				// 图片有修改时，先删除原先的旧图，再上传新图
 				delFile($localPath);
-				$urlPath = SITE_URL . '/public/upload/supplier/' . $name . '/';
+				$urlPath = getUploadUrlPath() . 'supplier/' . $name . '/';
 				$url = moveFile('img', $localPath, $urlPath, getRandFileName('.jpg'));
 				if (!$url) {
 					delFile($localPath);
