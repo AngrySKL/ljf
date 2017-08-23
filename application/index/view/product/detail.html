@@ -26,7 +26,7 @@
                 <div class="row">
                     <div class="col-md-2">
                         <div class="site-logo">
-                            <a href="index.html" class="brand">陸加奉</a>
+                            <a href="{:url('/')}" class="brand">陸加奉</a>
                         </div>
                     </div>
                     <div class="col-md-10">
@@ -39,18 +39,18 @@
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse" id="menu">
                             <ul class="nav navbar-nav navbar-right">
-                                <li class="active"><a href="{:url('index/index')}">首页</a></li>
+                                <li class="active"><a href="{:url('/')}">首页</a></li>
                                 <li class="dropdown">
                                     <a href="#products">产品<span class="caret"/></a>
                                     <ul class="dropdown-menu dropdown-menu-right">
                                         {volist name="products" id="vo"}
                                         <li>
-                                            <a href="{:url('product/dtl', array('id'=>$vo['id']))}">{$vo.name}</a>
+                                            <a href="{:url('index/product/dtl', array('id'=>$vo['id']))}">{$vo.name}</a>
                                         </li>
                                         {/volist}
                                     </ul>
                                 </li>
-                                <li><a href="{:url('supplier/dtl')}">供应商</a></li>
+                                <li><a href="{:url('index/supplier/dtl')}">供应商</a></li>
                             </ul>
                         </div>
                         <!-- /.Navbar-collapse -->
@@ -111,13 +111,13 @@
     <!-- START: Pagination -->
     <div class="nk-pagination nk-pagination-center">
         <div class="container">
-            <a class="nk-pagination-prev {$index - 1 < 0 ? 'disabled' : ''}" href="{$index - 1 < 0 ? '#' : url('product/dtl', array('id'=>$products[$index-1]['id']))}">
+            <a class="nk-pagination-prev {$index - 1 < 0 ? 'disabled' : ''}" href="{$index - 1 < 0 ? '#' : url('index/product/dtl', array('id'=>$products[$index-1]['id']))}">
                 <span class="pe-7s-angle-left"></span> 上一个
             </a>
             <a class="nk-pagination-center" href="#pictures">
                     <span class="nk-icon-squares"></span>
             </a>
-            <a class="nk-pagination-next  {$index + 1 > count($products) - 1 ? 'disabled' : ''}" href="{$index + 1 > count($products) - 1 ? '#' : url('product/dtl', array('id'=>$products[$index+1]['id']))}">
+            <a class="nk-pagination-next  {$index + 1 > count($products) - 1 ? 'disabled' : ''}" href="{$index + 1 > count($products) - 1 ? '#' : url('index/product/dtl', array('id'=>$products[$index+1]['id']))}">
                 下一个 <span class="pe-7s-angle-right"></span>
             </a>
         </div>

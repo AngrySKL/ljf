@@ -47,7 +47,7 @@
                 <div class="row">
                     <div class="col-md-2">
                         <div class="site-logo">
-                            <a href="index.html" class="brand">陸加奉</a>
+                            <a href="{:url('/')}" class="brand">陸加奉</a>
                         </div>
                     </div>
                     <div class="col-md-10">
@@ -138,7 +138,7 @@
                                     <p>
                                         {$vo.description}
                                     </p>
-                                    <a href="{:url('product/dtl', array('id'=>$vo['id']))}" class="btn btn-skin">了解更多</a>
+                                    <a href="{:url('index/product/dtl', array('id'=>$vo['id']))}" class="btn btn-skin">了解更多</a>
                                 </div>
                             </div>
                         </div>
@@ -185,7 +185,7 @@
                             <p>
                                 请尽量详细。
                             </p>
-                            <a href="{:url('supplier/dtl')}" class="btn btn-skin">了解更多</a>
+                            <a href="{:url('index/supplier/dtl')}" class="btn btn-skin">了解更多</a>
                         </div>
                     </div>
                 </div>
