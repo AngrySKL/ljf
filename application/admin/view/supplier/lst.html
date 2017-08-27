@@ -56,7 +56,7 @@
                                                 {volist name="list" id="vo"}
                                                 <tr>
                                                     <td align="center">{$vo['id']}</td>
-                                                    <td align="center">{$vo['typeId']}</td>
+                                                    <td align="center">{$vo['type']}</td>
                                                     <td align="center">{$vo['name']}</td>
                                                     <td align="center">
                                                         {if condition="($vo['imageUrl'] neq null AND $vo['imageUrl'] neq '')"}
@@ -82,9 +82,6 @@
                                                 {/volist}
                                             </tbody>
                                         </table>
-                                    </div>
-                                    <div style="text-align:right; margin-top:10px;">
-                                        {$pageRender}
                                     </div>
                                 </div>
                             </div>

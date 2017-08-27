@@ -46,8 +46,9 @@
                                                 <tr>
                                                     <th class="text-center" width="5%">ID</th>
                                                     <th class="text-center" width="5%">名称</th>
-                                                    <th class="text-center" width="20%">介绍</th>
-                                                    <th class="text-center" width="50%">样图</th>
+                                                    <th class="text-center" width="10%">介绍</th>
+                                                    <th class="text-center" width="20%">缩略图</th>
+                                                    <th class="text-center" width="40%">样图</th>
                                                     <th class="text-center" width="20%">操作</th>
                                                 </tr>
                                             </thead>
@@ -58,8 +59,13 @@
                                                     <td align="center">{$vo['name']}</td>
                                                     <td align="center">{$vo['description']}</td>
                                                     <td align="center">
+                                                        <a class="example-image-link" href="{$vo['thumbUrl']}" class="thumbnail" data-lightbox="{$vo.id}tmb">
+                                                                <img class="example-image" src="{$vo['thumbUrl']}" alt="点击查看大图">
+                                                            </a>
+                                                    </td>
+                                                    <td align="center">
                                                         {volist name="$vo['urls']" id="u"}
-                                                        <a class="example-image-link" href="{$u.bigUrl}" class="thumbnail" data-lightbox="{$vo.id}ad">
+                                                        <a class="example-image-link" href="{$u.bigUrl}" class="thumbnail" data-lightbox="{$vo.id}dtl">
                                                                 <img class="example-image" src="{$u.smallUrl}" alt="点击查看大图">
                                                             </a> {/volist}
                                                     </td>

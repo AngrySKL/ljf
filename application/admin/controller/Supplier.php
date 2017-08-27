@@ -10,13 +10,20 @@ class Supplier extends Base {
 	private $listRows = 10;
 
 	public function lst() {
-		$list = db('supplier')
+		$results = db('supplier')
 			->order('id', 'asc')
 			->paginate($this->listRows);
-		$pageRender = $list->render();
+		$list = array();
+		foreach ($results as $supplier) {
+			array_push($list, array('id' => $supplier['id'],
+				'type' => db('suppliertype')
+					->find($supplier['typeId'])['description'],
+				'name' => $supplier['name'],
+				'imageUrl' => $supplier['imageUrl'],
+				'homeUrl' => $supplier['homeUrl']));
+		}
 
 		$this->assign('list', $list);
-		$this->assign('pageRender', $pageRender);
 		return $this->fetch();
 	}
 
@@ -26,20 +33,21 @@ class Supplier extends Base {
 			->select();
 
 		if (request()->isPost()) {
-			$name = input('name');
-			$localPath = getUploadLocalPath() . 'supplier/' . $name . '/';
+			$dirName = getRandChar(10);
+			$localPath = getUploadLocalPath() . 'supplier/' . $dirName . '/';
 			createDir($localPath);
 
-			$urlPath = getUploadUrlPath() . 'supplier/' . $name . '/';
+			$urlPath = getUploadUrlPath() . 'supplier/' . $dirName . '/';
 			$url = moveFile('img', $localPath, $urlPath, getRandFileName('.jpg'));
 			if (!$url) {
 				delFile($localPath);
 				$this->error('上传文件失败，请重试！');
 			}
 			$data = ['typeId' => input('typeId'),
-				'name' => $name,
+				'name' => input('name'),
 				'imageUrl' => $url,
-				'homeUrl' => input('homeUrl')];
+				'homeUrl' => input('homeUrl'),
+				'dirName' => $dirName];
 			if (db('supplier')->insert($data)) {
 				return $this->success('添加供应商成功！', 'lst');
 			} else {
@@ -72,8 +80,8 @@ class Supplier extends Base {
 		$supplier = db('supplier')->find($id);
 
 		if (request()->isPost()) {
-			$name = input('name');
-			$localPath = getUploadLocalPath() . 'supplier/' . $name . '/';
+			$dirName = $supplier['dirName'];
+			$localPath = getUploadLocalPath() . 'supplier/' . $dirName . '/';
 			createDir($localPath);
 
 			$url = '';
@@ -91,7 +99,7 @@ class Supplier extends Base {
 				// 1 修改图片
 				// 图片有修改时，先删除原先的旧图，再上传新图
 				delFile($localPath);
-				$urlPath = getUploadUrlPath() . 'supplier/' . $name . '/';
+				$urlPath = getUploadUrlPath() . 'supplier/' . $dirName . '/';
 				$url = moveFile('img', $localPath, $urlPath, getRandFileName('.jpg'));
 				if (!$url) {
 					delFile($localPath);

@@ -73,7 +73,8 @@ function getRandChar($length) {
 function moveFile($fileName, $localPath, $urlPath, $saveName) {
 	if (empty($fileName) ||
 		empty($localPath) ||
-		empty($urlPath)) {
+		empty($urlPath) ||
+		empty($saveName)) {
 		return false;
 	}
 

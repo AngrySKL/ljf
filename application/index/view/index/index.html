@@ -4,9 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="陸加奉（香港）國際有限公司">
+    <meta name="description" content="上海陆加奉装饰材料有限公司">
     <meta name="author" content="GreakSKL">
-    <title>陸加奉（香港）國際有限公司</title>
+    <title>上海陆加奉装饰材料有限公司</title>
     <!-- css -->
     <link href="__PUBLIC__/css/bootstrap.min.css" rel="stylesheet">
     <link href="__PUBLIC__/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
@@ -28,8 +28,8 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2 text-center inner">
                     <div class="animatedParent">
-                        <h1 class="animated fadeInDown">陸加奉</h1>
-                        <p class="animated fadeInUp">中国大陆最高端，最奢华的顶级家私供应商</p>
+                        <h1 class="animated fadeInDown">陆加奉</h1>
+                        <p class="animated fadeInUp">中国大陆最高端，最奢华的顶级家私供应商。</p>
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                 <div class="row">
                     <div class="col-md-2">
                         <div class="site-logo">
-                            <a href="{:url('/')}" class="brand">陸加奉</a>
+                            <a href="{:url('/')}" class="brand">陆加奉</a>
                         </div>
                     </div>
                     <div class="col-md-10">
@@ -94,10 +94,10 @@
                 <div class="col-lg-8 col-lg-offset-2 animatedParent">
                     <div class="text-center">
                         <p>
-                            这里填写关于我们第一段。
+                            本公司主要代理意大利及美国的多个顶级品牌的窗帘，墙纸，地毯，家具，灯具等。
                         </p>
                         <p>
-                            这里填写关于我们第二段。
+                            本公司是在中国市场的知名品牌，合作项目基本上都是国内著名的酒店及豪宅项目。
                         </p>
                         <a href="#product" class="btn btn-skin btn-scroll">我们的产品</a>
                     </div>
@@ -122,17 +122,14 @@
         </div>
         <div class="text-center">
             <div class="container">
-                {volist name="list" id="vo"}
-                    {if condition="($i % 3) eq 1"}
-                <div class="row animatedParent">
+                {volist name="list" id="vo"} {if condition="($i % 3) eq 1"}
+                <div class="row animatedParent product-row">
                     {/if}
                     <div class="col-xs-12 col-sm-4 col-md-4">
                         <div class="animated rotateInDownLeft {$i % 3 == 1 ? '' : ($i % 3 == 2 ? 'slow' : 'slower')}">
-                            <div class="service-box">
-                                <div class="service-icon">
-                                    <span class="fa fa-star fa-2x"></span>
-                                </div>
-                                <div class="service-desc">
+                            <div class="product-box">
+                                <img class="product-img" alt="{$vo.name}" src="{$vo.thumbUrl}">
+                                <div class="product-desc">
                                     <h5>{$vo.name}</h5>
                                     <div class="divider-header"></div>
                                     <p>
@@ -145,8 +142,7 @@
                     </div>
                     {if condition="($i % 3) eq 0"}
                 </div>
-                    {/if}
-                {/volist}
+                {/if} {/volist}
             </div>
         </div>
     </section>
@@ -175,12 +171,9 @@
                         </a>
                     </div>
                     <div class="col-md-6 animated fadeInUp slow">
-                        <div class="text-center">
+                        <div class="text-center" style="margin-top: 50px;">
                             <p>
                                 这里填写选取供应商的描述。
-                            </p>
-                            <p>
-                                例如以何种标准选取供应商，我们的供应商都是世界顶级的等等。
                             </p>
                             <p>
                                 请尽量详细。
@@ -209,30 +202,24 @@
         </div>
         <div class="container">
             <div class="row marginbot-80">
-                <div class="col-md-8 col-md-offset-2">
-                    <form id="contact-form">
-                        <div class="row marginbot-20">
-                            <div class="col-md-6 xs-marginbot-20">
-                                <input type="text" class="form-control input-lg" id="name" placeholder="姓名" required="required" />
-                            </div>
-                            <div class="col-md-6">
-                                <input type="email" class="form-control input-lg" id="email" placeholder="邮箱地址" required="required" />
-                            </div>
+                <div class="col-md-4 col-sm-6">
+                        <div class="center contact-block contact-border-right">
+                            <span class="fa fa-phone fa-3x"></span>
+                            <h4>电话：021-88888888</h4>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input type="text" class="form-control input-lg" id="subject" placeholder="标题" required="required" />
-                                </div>
-                                <div class="form-group">
-                                    <textarea name="message" id="message" class="form-control" rows="4" cols="25" required="required" placeholder="信息"></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-skin btn-lg btn-block" id="btnContactUs">
-                                    发送消息</button>
-                            </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <div class="center contact-block contact-border-right">
+                            <span class="fa fa-map-marker fa-3x"></span>
+                            <h4>地址：上海市宜山路407号喜盈门国际建材品牌中心</h4>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <div class="center contact-block">
+                            <span class="fa fa-envelope fa-3x"></span>
+                            <h4>邮箱：8888@8888.com</h4>
+                        </div>
+                    </div> 
             </div>
         </div>
     </section>

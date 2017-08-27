@@ -42,6 +42,7 @@ class Product extends Base {
 			array_push($list, array('id' => $product['id'],
 				'name' => $product['name'],
 				'description' => $product['description'],
+				'thumbUrl' => $product['thumbUrl'],
 				'urls' => $urls));
 		}
 
@@ -73,24 +74,30 @@ class Product extends Base {
 				}
 			}
 
-			$name = input('name');
-			$localPath = getUploadLocalPath() . 'product/' . $name . '/';
+			$dirName = getRandChar(10);
+			$localPath = getUploadLocalPath() . 'product/' . $dirName . '/';
 			createDir($localPath);
 
-			$urlPath = getUploadUrlPath() . 'product/' . $name . '/';
+			$urlPath = getUploadUrlPath() . 'product/' . $dirName . '/';
 
 			$smallUrls = moveFile('smallImgs', $localPath, $urlPath, $smallNames);
 			$bigUrls = moveFile('bigImgs', $localPath, $urlPath, $bigNames);
 
-			if (!$smallUrls || !$bigUrls) {
+			$thumbUrl = moveFile('thumbImg', $localPath, $urlPath, getRandFileName('.jpg'));
+
+			if (!$smallUrls ||
+				!$bigUrls ||
+				!$thumbUrl) {
 				delFile($localPath);
 				$this->error('上传图片失败，请重试！');
 			}
 
-			$data = ['name' => $name,
+			$data = ['name' => input('name'),
 				'description' => input('description'),
+				'thumbUrl' => $thumbUrl,
 				'smallUrls' => $imgCount == 1 ? $smallUrls : implode(';', $smallUrls),
-				'bigUrls' => $imgCount == 1 ? $bigUrls : implode(';', $bigUrls)];
+				'bigUrls' => $imgCount == 1 ? $bigUrls : implode(';', $bigUrls),
+				'dirName' => $dirName];
 			if (db('product')->insert($data)) {
 				return $this->success('添加商品成功！', 'lst');
 			} else {
@@ -102,9 +109,9 @@ class Product extends Base {
 
 	public function del() {
 		$id = input('id');
-		$name = db('product')->find($id)['name'];
+		$dirName = db('product')->find($id)['dirName'];
 		if (db('product')->delete($id)) {
-			$localPath = './upload/product/' . $name . '/';
+			$localPath = './upload/product/' . $dirName . '/';
 			delDir($localPath);
 			$this->success('删除商品成功！', 'lst');
 		} else {
@@ -124,16 +131,18 @@ class Product extends Base {
 			$editSmallImgs = input('editSmallImgs');
 			$editBigImgs = input('editBigImgs');
 
-			$name = input('name');
-			$localPath = getUploadLocalPath() . 'product/' . $name . '/';
+			$dirName = $product['dirName'];
+			$localPath = getUploadLocalPath() . 'product/' . $dirName . '/';
 			createDir($localPath);
 
-			$urlPath = getUploadUrlPath() . 'product/' . $name . '/';
+			$urlPath = getUploadUrlPath() . 'product/' . $dirName . '/';
 
 			$data = array();
 			$data['id'] = $id;
 			$data['name'] = input('name');
 			$data['description'] = input('description');
+
+			// 1. 首先处理商品详情图片的修改情况
 			if ($editSmallImgs == -1) {
 				if ($editBigImgs != -1) {
 					// 小图没有变化而大图变了
@@ -179,11 +188,25 @@ class Product extends Base {
 					$smallUrls = moveFile('smallImgs', $localPath, $urlPath, $smallNames);
 					$bigUrls = moveFile('bigImgs', $localPath, $urlPath, $bigNames);
 
-					if (!$smallUrls || !$bigUrls) {
+					$thumbUrl = '';
+					// 2. 接着处理缩略图的修改情况
+					$editThumbImg = input('editThumbImg');
+					if ($editThumbImg == 0) {
+						// 删除缩略图
+						$thumbUrl = null;
+					} else if ($editThumbImg == 1) {
+						// 修改缩略图
+						$thumbUrl = moveFile('thumbImg', $localPath, $urlPath, getRandFileName('.jpg'));
+					}
+
+					if (!$smallUrls ||
+						!$bigUrls ||
+						!$thumbUrl) {
 						delFile($localPath);
 						$this->error('上传图片失败，请重试！');
 					}
 
+					$data['thumbUrl'] = $thumbUrl;
 					$data['smallUrls'] = $imgCount == 1 ? $smallUrls : implode(';', $smallUrls);
 					$data['bigUrls'] = $imgCount == 1 ? $bigUrls : implode(';', $bigUrls);
 				}
